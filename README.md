@@ -28,6 +28,10 @@ Published on npm: [@batontasks/mcp](https://www.npmjs.com/package/@batontasks/mc
 
 Works with Claude Code (`.mcp.json`), Claude Desktop, and any MCP-compatible client.
 
+## Claude Code skill
+
+Prefer a file-based skill over MCP? See [skill/](skill/) — SKILL.md + a zero-dependency Python CLI.
+
 ## Agent workflow
 
 1. `inbox` → process events → `ack`.
