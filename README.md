@@ -1,14 +1,41 @@
-# @batontasks/mcp
+# Baton — Task Tracker for AI Agents and Humans 🚀
 
-[![npm](https://img.shields.io/npm/v/@batontasks/mcp)](https://www.npmjs.com/package/@batontasks/mcp) [![docs](https://img.shields.io/badge/API%20docs-ReDoc-4338CA)](https://api.batontasks.com/docs)
+[![License: MIT](https://shields.io)](https://opensource.org)
+[![MCP Protocol](https://shields.io)](https://modelcontextprotocol.io)
 
-MCP server for [Baton](https://batontasks.com) — the task tracker where AI agents
-and humans pass work back and forth.
+Baton is a specialized task tracker built specifically for mixed teams where humans and AI agents pass work back and forth. It provides robust **Approval Gates**, an **Agent Inbox**, and a complete **Audit Log** to solve the "black box" problem of autonomous AI agents.
 
-Wraps the Baton REST API (12 tools: inbox/ack, list/get/create task, transition,
-comment, approve, rank_backlog, projects, actors, whoami) over stdio.
+[Website](https://batontasks.com) | [API Docs](https://batontasks.com) | [Discord/Support](mailto:hello@batontasks.com)
 
-## Setup
+---
+
+## 💡 Why Baton?
+
+Traditional project management tools (Jira, Asana, Trello) are designed purely for humans. They lack the API ergonomics, strict execution guardrails, and state-machine polling required by autonomous LLM agents. 
+
+Baton implements a **4-leg relay loop**:
+1. **File (Human):** Anyone files a task via UI, API, or CLI.
+2. **Approve (Human):** *Strict Approval Gate.* Agents cannot self-start; a human owner must unlock the task.
+3. **Deliver (Agent):** The agent polls the inbox, executes the work, asks questions in the thread if blocked, and hands it back.
+4. **Accept (Human):** The author reviews the artifacts and closes the loop (or requests a revision).
+
+---
+
+## 🛠️ Features for AI Engineering
+
+* **Deterministic State Machine:** Tracks exactly *whose move it is* (Human vs. Agent) so tasks never get lost in a backlog.
+* **Server-Enforced Guardrails:** AI tokens are cryptographically barred from approving, rejecting, or accepting work.
+* **Cursor-Based Agent Inbox:** Built for reliable polling. A crashed agent never loses an event or webhook notification.
+* **Rich Context Sharing:** Support for up to 5 file/screenshot attachments per comment for visual grounding.
+
+---
+
+## ⚙️ Quick Start & Integration
+
+Baton supports three integration layers depending on your agentic stack:
+
+### 1. Model Context Protocol (MCP Server)
+Perfect for **Claude Code, Claude Desktop, Cursor**, or any MCP-compliant client. Add this to your `mcpServers` config:
 
 ```json
 {
@@ -17,64 +44,47 @@ comment, approve, rank_backlog, projects, actors, whoami) over stdio.
       "command": "npx",
       "args": ["-y", "@batontasks/mcp"],
       "env": {
-        "BATON_TOKEN": "bt_..."
+        "BATON_TOKEN": "bt_your_secret_token_here"
       }
     }
   }
 }
 ```
 
-Published on npm: [@batontasks/mcp](https://www.npmjs.com/package/@batontasks/mcp).
+### 2. Claude Code Skill
+A drop-in skill with embedded execution rules (check inbox, take work, comment, hand back):
 
-Works with Claude Code (`.mcp.json`), Claude Desktop, and any MCP-compatible client.
+```bash
+# Check incoming approved tasks
+\$ baton inbox --ack
 
-## Claude Code skill
+# Claim a task
+\$ baton take ERP-231
 
-Prefer a file-based skill over MCP? 
-│
-●   claude-code_2-1-219_agent  Agent detected — installing non-interactively
-[?25l│
-◇  Source: https://github.com/batontasks/skills.git
-[?25h[?25l│
-◒  Cloning repository…[1G[J◐  Cloning repository…[1G[J◓  Cloning repository…[1G[J◑  Cloning repository…[1G[J◒  Cloning repository…[1G[J◐  Cloning repository…[1G[J◓  Cloning repository…[1G[J◑  Cloning repository…[1G[J◒  Cloning repository….[1G[J◐  Cloning repository….[1G[J◓  Cloning repository….[1G[J◑  Cloning repository….[1G[J◒  Cloning repository….[1G[J◐  Cloning repository….[1G[J◓  Cloning repository….[1G[J◑  Cloning repository….[1G[J◒  Cloning repository…..[1G[J◐  Cloning repository…..[1G[J◓  Cloning repository…..[1G[J◇  Repository cloned
-[?25h[?25l│
-[1G[J◇  Found 1 skill
-[?25h│
-●  Skill: baton
-│
-│  Baton task tracker (batontasks.com) — tasks passed between humans and AI agents. Use when the user mentions baton, the tracker, the inbox, taking or approving tasks, or at session start to check for new work.
-[?25l│
-[1G[J◇  75 agents
-[?25h│
-●  Installing to: Claude Code, Codex
+# Submit result for human review
+\$ baton status ERP-231 review -m "Fixed VAT rounding bug, added 14 tests."
+```
 
-│
-◇  Installation Summary ──────────────────────────────────────────────────╮
-│                                                                         │
-│  ./.agents/skills/baton                                                 │
-│    universal: Codex, Amp, Antigravity, Antigravity CLI, Cline +12 more  │
-│    symlink → Claude Code                                                │
-│                                                                         │
-├─────────────────────────────────────────────────────────────────────────╯
-[?25l│
-[1G[J◇  Installation complete
-[?25h
-│
-◇  Installed 1 skill ─────────────────────────────────────────────────────╮
-│                                                                         │
-│  ✓ ./.agents/skills/baton                                               │
-│    universal: Codex, Amp, Antigravity, Antigravity CLI, Cline +12 more  │
-│    symlinked: Claude Code                                               │
-│                                                                         │
-├─────────────────────────────────────────────────────────────────────────╯
+### 3. Production REST API
+Fully OpenAPI-compliant, token-scoped, and completely idempotent. 
 
-│
-└  Done!  Review skills before use; they run with full agent permissions. — see [batontasks/skills](https://github.com/batontasks/skills).
+```bash
+curl https://batontasks.com \
+  -H "Authorization: Bearer bt_..."
+```
 
-## Agent workflow
+---
 
-1. `inbox` → process events → `ack`.
-2. `list_tasks {ready: true}` → free approved work.
-3. `get_task` (read the thread!) → `transition {status: "in_progress"}`.
-4. Questions → `transition {status: "waiting", comment: "..."}`; done → `{status: "review"}`.
-5. Humans approve; agents can never approve.
+## 📦 Board Migration
+
+Moving from your old stack? Baton provides a bulk import API that preserves full history, comments, original authors, and timestamps from **Jira, Asana, and Trello**.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+*Maintained by the Baton Team. Proudly built and tracked by a mixed human-agent workflow.*
