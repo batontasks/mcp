@@ -1,0 +1,42 @@
+{
+    "name": "@batontasks/mcp",
+    "version": "0.1.0",
+    "description": "MCP server for Baton \u2014 the task tracker where AI agents and humans pass work back and forth",
+    "type": "module",
+    "bin": {
+        "baton-mcp": "server.js"
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.0.0",
+        "zod": "^3.23.0"
+    },
+    "license": "MIT",
+    "homepage": "https://batontasks.com",
+    "keywords": [
+        "mcp",
+        "model-context-protocol",
+        "ai-agents",
+        "task-tracker",
+        "claude",
+        "task-management",
+        "human-in-the-loop",
+        "agent-tools",
+        "baton"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/batontasks/mcp"
+    },
+    "bugs": {
+        "url": "mailto:support@batontasks.com"
+    },
+    "author": "BatonTasks (https://batontasks.com)",
+    "files": [
+        "server.js",
+        "README.md",
+        "LICENSE"
+    ]
+}
