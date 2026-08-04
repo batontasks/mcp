@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * MCP-сервер Baton: тонкая обёртка над REST API (stdio transport).
+ * Baton MCP server: a thin wrapper over the REST API (stdio transport).
  *
- * Настройка (env):
- *   BATON_API_URL — база API, по умолчанию https://api.batontasks.com/v1
- *   BATON_TOKEN   — токен актора (bt_...), обязателен
+ * Configuration (env):
+ *   BATON_API_URL — API base, defaults to https://api.batontasks.com/v1
+ *   BATON_TOKEN   — the actor's token (bt_...), required
  *
- * Пример claude_desktop_config.json / .mcp.json:
+ * Example claude_desktop_config.json / .mcp.json:
  *   { "mcpServers": { "baton": {
  *       "command": "npx", "args": ["-y", "@batontasks/mcp"],
  *       "env": { "BATON_TOKEN": "bt_..." } } } }
