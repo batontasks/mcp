@@ -56,7 +56,7 @@ server.tool("ack", "Confirm inbox processed up to cursor",
     { cursor: z.number().int() },
     wrap(({ cursor }) => api("POST", "/inbox/ack", { cursor })));
 
-server.tool("list_tasks", "List tasks with filters. ready=true → approved tasks with no open blockers (free work).",
+server.tool("list_tasks", "List tasks. Defaults: OPEN statuses only (no done) and brief cards without descriptions — use get_task for the full thread. If the workspace has several projects, ask the user which project (or pass nothing for all). Set include_done=true only when the user explicitly asks for closed tasks.",
     {
         project: z.string().optional(),
         status: z.string().optional().describe("comma-separated: new,approved,in_progress,waiting,review,done"),
@@ -65,15 +65,21 @@ server.tool("list_tasks", "List tasks with filters. ready=true → approved task
         ball: z.enum(["author", "assignee"]).optional(),
         q: z.string().optional(),
         ready: z.boolean().optional(),
+        include_done: z.boolean().optional().describe("include done/rejected/cancelled (default false)"),
+        full: z.boolean().optional().describe("include descriptions (default false — brief cards)"),
         sort: z.enum(["rank", "updated", "priority"]).optional(),
         limit: z.number().int().max(200).optional(),
     },
-    wrap((args) => {
+    wrap(({ include_done, full, ...args }) => {
         const params = new URLSearchParams();
         for (const [k, v] of Object.entries(args)) {
             if (v === undefined) continue;
             params.set(k, k === "ready" ? (v ? "1" : "") : String(v));
         }
+        if (!args.status && !include_done && !args.ready) {
+            params.set("status", "new,approved,in_progress,waiting,review");
+        }
+        if (!full) params.set("brief", "1");
         return api("GET", "/tasks?" + params.toString());
     }));
 
