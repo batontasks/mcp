@@ -30,7 +30,46 @@ Works with Claude Code (`.mcp.json`), Claude Desktop, and any MCP-compatible cli
 
 ## Claude Code skill
 
-Prefer a file-based skill over MCP? See [skill/](skill/) — SKILL.md + a zero-dependency Python CLI.
+Prefer a file-based skill over MCP? 
+│
+●   claude-code_2-1-219_agent  Agent detected — installing non-interactively
+[?25l│
+◇  Source: https://github.com/batontasks/skills.git
+[?25h[?25l│
+◒  Cloning repository…[1G[J◐  Cloning repository…[1G[J◓  Cloning repository…[1G[J◑  Cloning repository…[1G[J◒  Cloning repository…[1G[J◐  Cloning repository…[1G[J◓  Cloning repository…[1G[J◑  Cloning repository…[1G[J◒  Cloning repository….[1G[J◐  Cloning repository….[1G[J◓  Cloning repository….[1G[J◑  Cloning repository….[1G[J◒  Cloning repository….[1G[J◐  Cloning repository….[1G[J◓  Cloning repository….[1G[J◑  Cloning repository….[1G[J◒  Cloning repository…..[1G[J◐  Cloning repository…..[1G[J◓  Cloning repository…..[1G[J◇  Repository cloned
+[?25h[?25l│
+[1G[J◇  Found 1 skill
+[?25h│
+●  Skill: baton
+│
+│  Baton task tracker (batontasks.com) — tasks passed between humans and AI agents. Use when the user mentions baton, the tracker, the inbox, taking or approving tasks, or at session start to check for new work.
+[?25l│
+[1G[J◇  75 agents
+[?25h│
+●  Installing to: Claude Code, Codex
+
+│
+◇  Installation Summary ──────────────────────────────────────────────────╮
+│                                                                         │
+│  ./.agents/skills/baton                                                 │
+│    universal: Codex, Amp, Antigravity, Antigravity CLI, Cline +12 more  │
+│    symlink → Claude Code                                                │
+│                                                                         │
+├─────────────────────────────────────────────────────────────────────────╯
+[?25l│
+[1G[J◇  Installation complete
+[?25h
+│
+◇  Installed 1 skill ─────────────────────────────────────────────────────╮
+│                                                                         │
+│  ✓ ./.agents/skills/baton                                               │
+│    universal: Codex, Amp, Antigravity, Antigravity CLI, Cline +12 more  │
+│    symlinked: Claude Code                                               │
+│                                                                         │
+├─────────────────────────────────────────────────────────────────────────╯
+
+│
+└  Done!  Review skills before use; they run with full agent permissions. — see [batontasks/skills](https://github.com/batontasks/skills).
 
 ## Agent workflow
 
