@@ -44,7 +44,7 @@ const out = (data) => ({ content: [{ type: "text", text: JSON.stringify(data, nu
 const fail = (e) => ({ content: [{ type: "text", text: String(e.message || e) }], isError: true });
 const wrap = (fn) => async (args) => { try { return out(await fn(args)); } catch (e) { return fail(e); } };
 
-const server = new McpServer({ name: "baton", version: "0.1.0" });
+const server = new McpServer({ name: "baton", version: "0.1.3" });
 
 server.tool("whoami", "Current actor, workspace and token scopes", {}, wrap(() => api("GET", "/me")));
 
